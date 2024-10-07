@@ -55,7 +55,6 @@ def title_by_year(matches: List[str]) -> List[str]:
         a list of movie titles made in the passed in year
     """
     year = int(matches[0])
-    print(year)
     result = []
     for movie in movie_db:
         if (get_year(movie))== year:
@@ -78,11 +77,11 @@ def title_by_year_range(matches: List[str]) -> List[str]:
         a list of movie titles made during those years, inclusive (meaning if you pass
         in ["1991", "1994"] you will get movies made in 1991, 1992, 1993 & 1994)
     """
-    start_year = int(matches[0])
-    end_year = int(matches[1])
+    year_start = int(matches[0])
+    year_end = int(matches[1])
     result = []
     for movie in movie_db:
-        if start_year <= get_year(movie) <= end_year:
+        if(get_year(movie) >= year_start and get_year(movie) <= year_end ):
             result.append(get_title(movie))
     return result 
 
@@ -121,7 +120,7 @@ def title_after_year(matches: List[str]) -> List[str]:
     year = int(matches[0])
     result = []
     for movie in movie_db:
-        if get_year(movie) > year:
+        if (get_year(movie) > year):
             result.append(get_title(movie)) 
     return result 
 
@@ -135,11 +134,12 @@ def director_by_title(matches: List[str]) -> List[str]:
     Returns:
         a list of 1 string, the director of the movie
     """
-    tite = matches[0]
+    movie_title = str(matches[0]) 
     result = []
     for movie in movie_db:
-        if get_title(movie) == title:
+        if get_title(movie) == movie_title:
            result.append(get_director(movie))
+           break
     return result
 
 
@@ -153,11 +153,12 @@ def title_by_director(matches: List[str]) -> List[str]:
     Returns:
         a list of movies titles directed by the passed in director
     """
-    director = matches[0]
+    movie_director = str(matches[0]) 
     result = []
     for movie in movie_db:
-        if get_director(movie) == director:
+        if get_director(movie) == movie_director:
             result.append(get_title(movie))
+            break
     return result 
 
 def actors_by_title(matches: List[str]) -> List[str]:
@@ -169,7 +170,12 @@ def actors_by_title(matches: List[str]) -> List[str]:
     Returns:
         a list of actors who acted in the passed in title
     """
-    
+    movie_title = str(matches[0])
+    actors = []
+    for movie in movie_db:
+        if get_title(movie) == title:
+            actors.extend(get_actors(movie))
+    return actors 
 
 
 def year_by_title(matches: List[str]) -> List[int]:
@@ -181,7 +187,13 @@ def year_by_title(matches: List[str]) -> List[int]:
     Returns:
         a list of one item (an int), the year that the movie was made
     """
-    pass
+    movie_title = matches[0]
+    result = []
+    for movie in movie_db:
+        if get_title(movie) == movie_title:
+            result.append(get_year(movie))
+            break
+    return result
 
 
 def title_by_actor(matches: List[str]) -> List[str]:
@@ -193,7 +205,12 @@ def title_by_actor(matches: List[str]) -> List[str]:
     Returns:
         a list of movie titles that the actor acted in
     """
-    pass
+    actor_name = matches[0]
+    result = []
+    for movie in movie_db:
+        if get_actors(movie) == actor:
+            result.append(get_title(movie))
+    return result
 
 
 # dummy argument is ignored and doesn't matter

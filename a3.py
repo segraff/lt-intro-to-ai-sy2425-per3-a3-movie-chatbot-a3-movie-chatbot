@@ -173,7 +173,7 @@ def actors_by_title(matches: List[str]) -> List[str]:
     movie_title = str(matches[0])
     actors = []
     for movie in movie_db:
-        if get_title(movie) == title:
+        if get_title(movie) == movie_title:
             actors.extend(get_actors(movie))
     return actors 
 
@@ -205,10 +205,11 @@ def title_by_actor(matches: List[str]) -> List[str]:
     Returns:
         a list of movie titles that the actor acted in
     """
-    actor_name = matches[0]
+    actor_name = str(matches[0])
     result = []
     for movie in movie_db:
-        if get_actors(movie) == actor:
+        actors = get_actors(movie)
+        if(actor_name in actors):
             result.append(get_title(movie))
     return result
 
@@ -249,7 +250,14 @@ def search_pa_list(src: List[str]) -> List[str]:
         a list of answers. Will be ["I don't understand"] if it finds no matches and
         ["No answers"] if it finds a match but no answers
     """
-    pass
+    for pattern, action in pa_list:
+        if match(src, pattern):
+            result = action(src)
+            if result:
+                return result
+            else:
+                return ["No answers"]
+    return ["I don't understand"]
 
 
 def query_loop() -> None:
@@ -339,3 +347,4 @@ if __name__ == "__main__":
     ) == sorted(["No answers"]), "failed search_pa_list test 3"
 
     print("All tests passed!")
+

@@ -134,14 +134,13 @@ def director_by_title(matches: List[str]) -> List[str]:
     Returns:
         a list of 1 string, the director of the movie
     """
-    movie_title = str(matches[0]) 
+    
+    title = matches[0]
     result = []
     for movie in movie_db:
-        if get_title(movie) == movie_title:
+        if title == get_title(movie):
            result.append(get_director(movie))
-           break
     return result
-
 
 
 def title_by_director(matches: List[str]) -> List[str]:
@@ -153,13 +152,13 @@ def title_by_director(matches: List[str]) -> List[str]:
     Returns:
         a list of movies titles directed by the passed in director
     """
-    movie_director = str(matches[0]) 
+    director = matches[0]
     result = []
     for movie in movie_db:
-        if get_director(movie) == movie_director:
+        if director == get_director(movie):
             result.append(get_title(movie))
-            break
-    return result 
+    return result
+   
 
 def actors_by_title(matches: List[str]) -> List[str]:
     """Finds actors who acted in the passed in movie title
@@ -209,8 +208,7 @@ def title_by_actor(matches: List[str]) -> List[str]:
     result = []
     for movie in movie_db:
         actors = get_actors(movie)
-        if(actor_name in actors):
-            result.append(get_title(movie))
+        result.append(get_title(movie))
     return result
 
 
@@ -250,13 +248,20 @@ def search_pa_list(src: List[str]) -> List[str]:
         a list of answers. Will be ["I don't understand"] if it finds no matches and
         ["No answers"] if it finds a match but no answers
     """
-    for pattern, action in pa_list:
-        if match(src, pattern):
-            result = action(src)
-            if result:
-                return result
-            else:
-                return ["No answers"]
+    for pat, act in pa_list:
+        print(pat, src)
+        val = match(pat, src)
+        print(val)
+        if val != None:
+            print(act)
+            result = act(val)
+            print(result)
+        if match(src, pat):
+           result = act(src)
+           if result:
+               return result
+           else:
+              return ["No answers"]
     return ["I don't understand"]
 
 

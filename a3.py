@@ -57,9 +57,8 @@ def title_by_year(matches: List[str]) -> List[str]:
     year = int(matches[0])
     result = []
     for movie in movie_db:
-        if (get_year(movie))== year:
+        if get_year(movie)== year:
            result.append(get_title(movie))
-   
     return result 
 
 
@@ -99,7 +98,7 @@ def title_before_year(matches: List[str]) -> List[str]:
     year = int(matches[0])
     result = []
     for movie in movie_db:
-        if get_year(movie) < year:
+        if (get_year(movie) < year):
             result.append(get_title(movie))
     return result
 
@@ -135,11 +134,12 @@ def director_by_title(matches: List[str]) -> List[str]:
         a list of 1 string, the director of the movie
     """
     
-    title = matches[0]
+    movie_title = str (matches[0])
     result = []
     for movie in movie_db:
-        if title == get_title(movie):
+        if get_title(movie) == movie_title:
            result.append(get_director(movie))
+           break
     return result
 
 
@@ -152,11 +152,12 @@ def title_by_director(matches: List[str]) -> List[str]:
     Returns:
         a list of movies titles directed by the passed in director
     """
-    director = matches[0]
+    movie_director = str(matches[0])
     result = []
     for movie in movie_db:
-        if director == get_director(movie):
+        if get_director(movie) == movie_director:
             result.append(get_title(movie))
+            break
     return result
    
 
@@ -186,7 +187,7 @@ def year_by_title(matches: List[str]) -> List[int]:
     Returns:
         a list of one item (an int), the year that the movie was made
     """
-    movie_title = matches[0]
+    movie_title = str(matches[0])
     result = []
     for movie in movie_db:
         if get_title(movie) == movie_title:
@@ -208,7 +209,8 @@ def title_by_actor(matches: List[str]) -> List[str]:
     result = []
     for movie in movie_db:
         actors = get_actors(movie)
-        result.append(get_title(movie))
+        if(actor_name in actors):
+            result.append(get_title(movie))
     return result
 
 
@@ -249,18 +251,12 @@ def search_pa_list(src: List[str]) -> List[str]:
         ["No answers"] if it finds a match but no answers
     """
     for pat, act in pa_list:
-        print(pat, src)
         val = match(pat, src)
-        print(val)
         if val != None:
-            print(act)
             result = act(val)
-            print(result)
-        if match(src, pat):
-           result = act(src)
-           if result:
+            if result:
                return result
-           else:
+            else:
               return ["No answers"]
     return ["I don't understand"]
 

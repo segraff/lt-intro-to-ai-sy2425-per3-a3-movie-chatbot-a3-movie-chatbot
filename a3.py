@@ -280,6 +280,7 @@ def query_loop() -> None:
     print("\nSo long!\n")
 
 
+query_loop()
 
 
 if __name__ == "__main__":
